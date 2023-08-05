@@ -12,9 +12,10 @@ function App() {
   return (
     <>
       {/* <Sign_in /> */}
-      {/* < Sign_up /> */}
-      <Home />
+      < Sign_up />
+      {/* <Home /> */}
       {/* <View /> */}
+      {/* <Edit /> */}
     </>
   );
 }
