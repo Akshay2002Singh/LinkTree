@@ -33,6 +33,10 @@ router.post('/signup',
             password: hashPassword
         });
 
+        // create empty entry in linktree model
+        await linkTree.create({
+            username : req.body.username
+        })
 
         res.json({
             uesr: await auth.find({ username: req.body.username })
@@ -80,5 +84,33 @@ router.post('/signin',
             })
         }
     })
+
+
+router.post('/isValidUser', async (req,res)=>{
+    const user = await auth.findOne({username : req.body.username})
+    if (!user) {
+        return res.json({
+            'valid' : true
+        })
+    }else{
+        return res.json({
+            'valid' : false
+        })
+    }
+})
+
+router.post('/isValidEmail', async (req,res)=>{ 
+    const user = await auth.findOne({email : req.body.email}).catch(err => res.json({"error" : err}))
+    if (!user) {
+        return res.json({
+            'valid' : true
+        })
+    }else{
+        return res.json({
+            'valid' : false
+        })
+    }
+})
+
 
 module.exports = router
