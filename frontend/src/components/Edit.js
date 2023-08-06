@@ -38,9 +38,11 @@ function Edit(props) {
             },
             body: JSON.stringify(userData),
         }).catch(error => console.log(error))
+        const data = await response.json();
+        // upload image 
+        
 
-        const data = await response.json(); 
-        if(data.msg === 'data submitted'){
+        if (data.msg === 'data submitted') {
             setMsg("Data Submitted")
         }
         window.scrollTo(0, 0)
@@ -49,7 +51,7 @@ function Edit(props) {
     function handleInput(e) {
         setUserData({
             ...userData,
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
         // console.log(userData)
     }
