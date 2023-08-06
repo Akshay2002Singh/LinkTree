@@ -1,6 +1,3 @@
-import React from 'react'
-import Nav_bar from './Nav_bar';
-import Sign_in from './Sign_in'
 import Foot from './Foot';
 import { useState, useEffect } from 'react';
 // icons
@@ -9,37 +6,39 @@ import { SiHackerearth, SiLeetcode, SiGeeksforgeeks, SiCodechef, SiCodeforces } 
 import { TbWorldWww } from "react-icons/tb";
 import { CgWebsite } from "react-icons/cg";
 import { HiDocumentText } from "react-icons/hi";
+import { useParams } from 'react-router-dom';
 
-
-function View(props) {
+function ViewTree(props) {
     const backend_url = 'http://localhost:3000'
     const [userData, setUserData] = useState({})
+    const {username} = useParams()
+    const [msg, setMsg] = useState("")
     useEffect(() => {
-        if (props.authToken !== null) {
-            fetch(`${backend_url}/api/linktree/view`, {
-                method: "POST",
+            const user = username ? username : 'elite' ;
+            fetch(`${backend_url}/${user}`, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "authToken": props.authToken,
                 },
             }).then((response => response.json())).then((d) => {
-                if (d.msg === 'data found') {
-                    delete d.data._id;
-                    delete d.data.__v;
-                    delete d.data.username;
-                    setUserData(d.data)
-                }
+                    delete d._id;
+                    delete d.__v;
+                    delete d.username;
+                    setUserData(d)
             }).catch(error => console.log(error))
-        }
     }, [])
 
-    if (props.authToken === null) {
-        return <Sign_in authToken={props.authToken} setAuthToken={props.setAuthToken} />
+    if(userData.error){
+        return(
+            <>
+                <h1 className='noUser'>No user exist with {username} username</h1>
+                <Foot showCreate={props.showCreate} />
+            </>
+        )
     }
 
     return (
         <>
-            <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
             <div className="view-form-container">
                 {userData.name !== "" ? <p className="name"> {userData.name} </p> : ""}
                 {userData.designation !== "" ? <p className="Designation"> {userData.designation} </p> : ""}
@@ -184,9 +183,9 @@ function View(props) {
                     </div>
                 </div>
             </div>
-            <Foot />
+            <Foot showCreate={props.showCreate} />
         </>
     )
 }
 
-export default View
+export default ViewTree

@@ -1,32 +1,114 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Nav_bar from './Nav_bar'
+import { Link, useNavigate } from 'react-router-dom'
+import Foot from './Foot'
+import Alertmst from './Alertmst'
 
-function Sign_up() {
+function Sign_up(props) {
+    const navigate = useNavigate()
+    const backend_url = 'http://localhost:3000'
+    const [user, setUser] = useState({
+        'username': '',
+        'email': '',
+        'password': '',
+        'confirmPassword': ''
+    })
+    const [msg, setMsg] = useState("")
+
+    function handleInput(e) {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+        // console.log(user)
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        // check for password 
+        if (user.password != user.confirmPassword) {
+            setMsg("Password and Confirm password are not same")
+            return
+        }
+        // check for username 
+        const response = await fetch(`${backend_url}/api/auth/isValidUser`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 'username': user.username }),
+        }).catch(error => console.log(error))
+        const data = await response.json().catch(err => console.log(err));
+
+        if (!data.valid) {
+            setMsg("This username already exist, try another")
+            return
+        }
+        // check for email
+        const email_response = await fetch(`${backend_url}/api/auth/isValidEmail`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 'email': user.email }),
+        }).catch(error => console.log(error))
+        const email_data = await email_response.json();
+        if (!email_data.valid) {
+            setMsg("This Email already exist, try another")
+            return
+        }
+        // Submit data to backend 
+        const create_user_response = await fetch(`${backend_url}/api/auth/signup`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                'email' : user.email,
+                'username' : user.username,
+                'password' : user.password
+            }),
+        }).catch(error => console.log(error))
+        const create_user_data = await create_user_response.json();
+        // console.log(create_user_data)
+        if(create_user_data.userCreated){
+            setMsg("")
+            navigate('/sign_in')
+        }else{
+            setMsg("Something went wrong. User not created.")
+        }
+    }
+
     return (
         <>
-            <Nav_bar />
-            <div class="form-container">
-                <p class="title">Create Account</p>
-                <form class="form">
-                <div class="input-group">
-                        <label for="username">Email</label>
-                        <input type="email" name="username" id="username" placeholder="Email" />
+            <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
+            <Alertmst msg={msg} setMsg={setMsg} />
+            <div className="form-container">
+                <p className="title">Create Account</p>
+                <form className="form" onSubmit={handleSubmit}>
+                    <div className="input-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" name="email" id="email" placeholder="Email" required value={user.email} onChange={handleInput} />
                     </div>
-                    <div class="input-group">
-                        <label for="username">Username</label>
-                        <input type="text" name="username" id="username" placeholder="Username" />
+                    <div className="input-group">
+                        <label htmlFor="username">Username</label>
+                        <input type="text" name="username" id="username" placeholder="Username" required value={user.name} onChange={handleInput} />
                     </div>
-                    <div class="input-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Password" />
+                    <div className="input-group">
+                        <label htmlFor="password">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Password" required value={user.password} onChange={handleInput} />
                     </div>
-                    <div class="input-group">
-                        <label for="password">Confirm Password</label>
-                        <input type="password" name="password" id="password" placeholder="Confirm Password" />
+                    <div className="input-group">
+                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required value={user.confirmPassword} onChange={handleInput} />
                     </div>
-                    <button class="sign">Sign up</button>
+                    <button type='submit' className="sign" >Sign up</button>
                 </form>
+                <p className="signup">Already have an account?
+                    <Link rel="noopener noreferrer" to="/sign_in"> Sign in</Link>
+                </p>
             </div>
+            <Foot />
         </>
     )
 }

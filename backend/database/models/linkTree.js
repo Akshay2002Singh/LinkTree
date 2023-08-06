@@ -26,7 +26,7 @@ const treeSchema = new Schema({
     leetCode: String,
     geeksforgeeks: String,
     gitHub: String,
-    codePen: String,
+    codePen: String
 });
 
 treeSchema.index({ username: 1 });

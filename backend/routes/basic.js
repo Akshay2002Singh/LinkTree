@@ -11,7 +11,11 @@ router.get('/',(req,res)=>{
 
 router.get('/:username' , async (req,res)=>{
     const data = await linkTree.findOne({username : req.params.username})
-    res.json(data);
+    if(data){
+        res.json(data);
+    }else{
+        return res.json({'error' : "No user found"})
+    }
 })
 
 

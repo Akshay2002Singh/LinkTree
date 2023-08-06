@@ -278,7 +278,7 @@ input:-webkit-autofill {
   height: 260px;
   display: block;
   border-radius: 8px;
-  margin: 8px auto;
+  margin: 18px auto;
 }
 
 /* view page css  */
@@ -489,4 +489,11 @@ footer p{
 footer>p>a{
   text-decoration: none;
   color: rgb(191, 177, 177);
+}
+
+.noUser{
+  text-align: center;
+  color: rgb(142, 202, 202);
+  padding: 10px 5px;
+  font-size: 28px;
 }

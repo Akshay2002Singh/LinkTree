@@ -1,7 +1,8 @@
 import React from 'react'
 import { FaInstagram,FaCodepen, FaGithub } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
-function Foot() {
+function Foot(props) {
   return (
     <>
         <footer>
@@ -28,7 +29,7 @@ function Foot() {
                     </a>
                 </ul>
             </div>
-            <p><a href=''>Create Your Tree</a></p>
+            {props.showCreate ? <p><Link to='/'>Create Your Tree</Link></p> : '' }
             <p>Rapid Coders</p>
         </footer>
     </>

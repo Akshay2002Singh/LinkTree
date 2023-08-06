@@ -19,7 +19,8 @@ router.post('/signup',
         if (!result.isEmpty()) {
             return res.json({
                 'error': "Validation error",
-                'errors_array': result.array()
+                'errors_array': result.array(),
+                'userCreated': false
             })
         }
         // generate salt 
@@ -35,11 +36,31 @@ router.post('/signup',
 
         // create empty entry in linktree model
         await linkTree.create({
-            username : req.body.username
+            username: req.body.username,
+            name: "",
+            designation: "",
+            about: "",
+            portfolio: "",
+            resume: "",
+            website: "",
+            // social media 
+            linkedIn: "",
+            twitter: "",
+            instagram: "",
+            facebook: "",
+            // coding platforms 
+            hackerRank: "",
+            hackerEarth: "",
+            codeChef: "",
+            codeforces: "",
+            leetCode: "",
+            geeksforgeeks: "",
+            gitHub: "",
+            codePen: "",
         })
 
         res.json({
-            uesr: await auth.find({ username: req.body.username })
+            'userCreated': true
         })
     })
 
@@ -68,15 +89,15 @@ router.post('/signin',
         }
 
         const is_valid_password = await bcrypt.compare(req.body.password, user.password)
-        
+
         if (is_valid_password) {
             const data = {
-                'username' : user.username
+                'username': user.username
             }
-            const authToken = jwt.sign(data,JWT_SECRET, { expiresIn: "7d" })
+            const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: "1d" })
             console.log(authToken)
             res.json({
-                'authToken' : authToken
+                'authToken': authToken
             })
         } else {
             res.json({
@@ -86,28 +107,29 @@ router.post('/signin',
     })
 
 
-router.post('/isValidUser', async (req,res)=>{
-    const user = await auth.findOne({username : req.body.username})
+router.post('/isValidUser', async (req, res) => {
+    const user = await auth.findOne({ username: req.body.username })
+    console.log(user)
     if (!user) {
         return res.json({
-            'valid' : true
+            'valid': true
         })
-    }else{
+    } else {
         return res.json({
-            'valid' : false
+            'valid': false
         })
     }
 })
 
-router.post('/isValidEmail', async (req,res)=>{ 
-    const user = await auth.findOne({email : req.body.email}).catch(err => res.json({"error" : err}))
+router.post('/isValidEmail', async (req, res) => {
+    const user = await auth.findOne({ email: req.body.email }).catch(err => res.json({ "error": err }))
     if (!user) {
         return res.json({
-            'valid' : true
+            'valid': true
         })
-    }else{
+    } else {
         return res.json({
-            'valid' : false
+            'valid': false
         })
     }
 })

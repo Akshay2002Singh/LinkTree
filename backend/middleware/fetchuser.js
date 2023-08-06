@@ -8,8 +8,9 @@ const fetchUser = (req,res,next) => {
             'error' : "invalid request"
         })
     }
+    // console.log(token)
     const data = jwt.verify(token,JWT_SECRET);
-    req.user = data.username;
+    req.body.username = data.username;
     next()
 }
 
