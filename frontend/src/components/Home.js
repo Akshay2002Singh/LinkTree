@@ -2,12 +2,17 @@ import React from 'react'
 import Nav_bar from './Nav_bar'
 import { useNavigate } from "react-router-dom";
 import ViewTree from './ViewTree';
+import Background from './Background'
+
+
 
 function Home(props) {
   const navigate = useNavigate();
   return (
     <>
       <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
+      <Background />
+
       <div className='home_body'>
         <h1>Your Personalized Link Hub!</h1>
         <h2>Are you tired of sharing multiple links on your social media profiles or business cards? Want a simple and elegant solution to consolidate all your important links in one place?</h2>

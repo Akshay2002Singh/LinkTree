@@ -7,6 +7,7 @@ import { TbWorldWww } from "react-icons/tb";
 import { CgWebsite } from "react-icons/cg";
 import { HiDocumentText } from "react-icons/hi";
 import { useParams } from 'react-router-dom';
+import Background from './Background';
 
 function ViewTree(props) {
     const backend_url = 'http://localhost:3000'
@@ -43,6 +44,7 @@ function ViewTree(props) {
 
     return (
         <>
+            <Background/>
             <div className="view-form-container">
                 {userData.name !== "" ? <p className="name"> {userData.name} </p> : ""}
                 {userData.designation !== "" ? <p className="Designation"> {userData.designation} </p> : ""}

@@ -3,6 +3,7 @@ import Nav_bar from './Nav_bar'
 import Foot from './Foot'
 import Sign_in from './Sign_in'
 import Alertmst from './Alertmst'
+import Background from './Background'
 
 function Edit(props) {
     // backend_url
@@ -106,6 +107,7 @@ function Edit(props) {
         <>
             <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
             <Alertmst msg={msg} setMsg={setMsg} />
+            <Background/>
             <div class="link-form-container">
                 <p class="title">EDIT LINK TREE</p>
                 <form class="form" onSubmit={handleSubmit}>

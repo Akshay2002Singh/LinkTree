@@ -10,6 +10,7 @@ import { TbWorldWww } from "react-icons/tb";
 import { CgWebsite } from "react-icons/cg";
 import { HiDocumentText } from "react-icons/hi";
 import Alertmst from './Alertmst';
+import Background from './Background';
 
 
 function View(props) {
@@ -60,6 +61,7 @@ function View(props) {
         <>
             <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
             <Alertmst msg={msg} setMsg={setMsg} />
+            <Background />
             <button class="Btn" onClick={handleCopy}>
                 <span class="text">Copy Linktree Url</span>
                 <span class="svgIcon">

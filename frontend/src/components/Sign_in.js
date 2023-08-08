@@ -4,7 +4,7 @@ import Foot from './Foot'
 import { Link, useNavigate } from 'react-router-dom'
 import Alertmst from './Alertmst'
 import { useState } from 'react'
-
+import Background from './Background'
 
 function Sign_in(props) {
     const navigate = useNavigate()
@@ -59,6 +59,7 @@ function Sign_in(props) {
         <>
             <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
             <Alertmst msg={msg} setMsg={setMsg} />
+            <Background />
             <div class="form-container">
                 <p class="title">Login</p>
                 <form class="form" onSubmit={handleSubmit}>

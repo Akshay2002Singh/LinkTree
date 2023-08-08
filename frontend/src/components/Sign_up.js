@@ -3,6 +3,7 @@ import Nav_bar from './Nav_bar'
 import { Link, useNavigate } from 'react-router-dom'
 import Foot from './Foot'
 import Alertmst from './Alertmst'
+import Background from './Background'
 
 function Sign_up(props) {
     const navigate = useNavigate()
@@ -83,6 +84,7 @@ function Sign_up(props) {
 
     return (
         <>
+            <Background/>
             <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
             <Alertmst msg={msg} setMsg={setMsg} />
             <div className="form-container">
