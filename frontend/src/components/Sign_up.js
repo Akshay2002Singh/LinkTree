@@ -4,10 +4,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import Foot from './Foot'
 import Alertmst from './Alertmst'
 import Background from './Background'
+import { Oval } from 'react-loader-spinner'
+import obj from '../url'
 
 function Sign_up(props) {
     const navigate = useNavigate()
-    const backend_url = 'http://localhost:3000'
+    const backend_url = obj.backend_url
     // userstate to store form data 
     const [user, setUser] = useState({
         'username': '',
@@ -17,6 +19,7 @@ function Sign_up(props) {
     })
     // state to show msg 
     const [msg, setMsg] = useState("")
+    const [showLoader, setShowLoader] = useState(false)
 
     function handleInput(e) {
         setUser({
@@ -29,8 +32,10 @@ function Sign_up(props) {
     async function handleSubmit(event) {
         event.preventDefault();
         // check for password 
+        setShowLoader(true)
         if (user.password != user.confirmPassword) {
             setMsg("Password and Confirm password are not same")
+            setShowLoader(false)
             return
         }
         // check for username 
@@ -45,6 +50,7 @@ function Sign_up(props) {
 
         if (!data.valid) {
             setMsg("This username already exist, try another")
+            setShowLoader(false)
             return
         }
         // check for email
@@ -58,6 +64,7 @@ function Sign_up(props) {
         const email_data = await email_response.json();
         if (!email_data.valid) {
             setMsg("This Email already exist, try another")
+            setShowLoader(false)
             return
         }
         // Submit data to backend 
@@ -76,10 +83,12 @@ function Sign_up(props) {
         // console.log(create_user_data)
         if(create_user_data.userCreated){
             setMsg("")
+            setShowLoader(false)
             navigate('/sign_in')
         }else{
             setMsg("Something went wrong. User not created.")
         }
+        setShowLoader(false)
     }
 
     return (
@@ -106,7 +115,21 @@ function Sign_up(props) {
                         <label htmlFor="confirmPassword">Confirm Password</label>
                         <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required value={user.confirmPassword} onChange={handleInput} />
                     </div>
-                    <button type='submit' className="sign" >Sign up</button>
+                    <button type='submit' className="sign" >
+                    {showLoader ?
+                            <Oval
+                                height={25}
+                                width={25}
+                                color="black"
+                                wrapperStyle={{}}
+                                wrapperClass="loader_react"
+                                visible={true}
+                                ariaLabel='oval-loading'
+                                secondaryColor="grey"
+                                strokeWidth={5}
+                                strokeWidthSecondary={5}
+                            /> : 'Sign up'}
+                        </button>
                 </form>
                 <p className="signup">Already have an account?
                     <Link rel="noopener noreferrer" to="/sign_in"> Sign in</Link>

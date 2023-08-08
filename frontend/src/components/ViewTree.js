@@ -8,9 +8,10 @@ import { CgWebsite } from "react-icons/cg";
 import { HiDocumentText } from "react-icons/hi";
 import { useParams } from 'react-router-dom';
 import Background from './Background';
+import obj from '../url'
 
 function ViewTree(props) {
-    const backend_url = 'http://localhost:3000'
+    const backend_url = obj.backend_url
     const [userData, setUserData] = useState({})
     const {username} = useParams()
     const [defaultImg, setDefaultImg] = useState(`${process.env.PUBLIC_URL}avtar.png`)

@@ -4,16 +4,19 @@ import Foot from './Foot'
 import Sign_in from './Sign_in'
 import Alertmst from './Alertmst'
 import Background from './Background'
+import obj from '../url'
+import { Oval } from 'react-loader-spinner'
 
 function Edit(props) {
     // backend_url
-    const backend_url = 'http://localhost:3000'
+    const backend_url = obj.backend_url
     // userstates 
     const [userData, setUserData] = useState({})
     const [image, setImage] = useState(null)
     const [msg, setMsg] = useState("")
     const [defaultImg, setDefaultImg] = useState(`${process.env.PUBLIC_URL}avtar.png`)
     const [username, setUsername] = useState()
+    const [showLoader, setShowLoader] = useState(false)
     useEffect(() => {
         // if token present then fetch data and url 
         if (props.authToken != null) {
@@ -50,6 +53,7 @@ function Edit(props) {
     async function handleSubmit(e) {
         e.preventDefault();
         // Submit data to backend 
+        setShowLoader(true)
         const response = await fetch(`${backend_url}/api/linktree/edit`, {
             method: "POST",
             headers: {
@@ -77,6 +81,7 @@ function Edit(props) {
         if (data.msg === 'data submitted') {
             setMsg("Data Submitted")
         }
+        setShowLoader(false)
         window.scrollTo(0, 0)
     }
 
@@ -107,7 +112,8 @@ function Edit(props) {
         <>
             <Nav_bar authToken={props.authToken} setAuthToken={props.setAuthToken} />
             <Alertmst msg={msg} setMsg={setMsg} />
-            <Background/>
+            <Background />
+            <div class="loader"></div>
             <div class="link-form-container">
                 <p class="title">EDIT LINK TREE</p>
                 <form class="form" onSubmit={handleSubmit}>
@@ -198,7 +204,21 @@ function Edit(props) {
                         </div>
                     </div>
 
-                    <button class="sign" type='submit'>Save</button>
+                    <button class="sign" type='submit'>
+                    {showLoader ?
+                            <Oval
+                                height={25}
+                                width={25}
+                                color="black"
+                                wrapperStyle={{}}
+                                wrapperClass="loader_react"
+                                visible={true}
+                                ariaLabel='oval-loading'
+                                secondaryColor="grey"
+                                strokeWidth={5}
+                                strokeWidthSecondary={5}
+                            /> : 'Save'}
+                        </button>
                 </form>
             </div>
             <Foot />

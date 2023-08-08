@@ -559,3 +559,11 @@ footer>p>a{
 .Btn:hover .svgIcon{
   background-color: rgb(0, 105, 105);
 }
+
+/* react loader lib  */
+.loader_react{
+  width: 25px;
+  height: 25px;
+  margin: auto;
+}
+

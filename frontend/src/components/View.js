@@ -12,11 +12,14 @@ import { HiDocumentText } from "react-icons/hi";
 import Alertmst from './Alertmst';
 import Background from './Background';
 
+import obj from '../url'
 
 function View(props) {
     // backend_url and frontend_url
-    const backend_url = 'http://localhost:3000'
-    const frontend_url = 'http://localhost:3001'
+    const backend_url = obj.backend_url
+    const frontend_url = obj.frontend_url
+    // const backend_url = 'http://localhost:3000'
+    // const frontend_url = 'http://localhost:3001'
     // userstates 
     const [userData, setUserData] = useState({})
     const [username,setUsername] = useState("");
