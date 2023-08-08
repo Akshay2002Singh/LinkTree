@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 function NavButtons(props) {
   function handleLogout(){
     props.setAuthToken(null)
-
+    localStorage.removeItem("authtoken");
   }
   if (props.authToken === null) {
     return (

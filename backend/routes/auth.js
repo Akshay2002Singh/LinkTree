@@ -95,7 +95,7 @@ router.post('/signin',
                 'username': user.username
             }
             const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: "1d" })
-            console.log(authToken)
+            // console.log(authToken)
             res.json({
                 'authToken': authToken
             })
@@ -109,7 +109,7 @@ router.post('/signin',
 
 router.post('/isValidUser', async (req, res) => {
     const user = await auth.findOne({ username: req.body.username })
-    console.log(user)
+    // console.log(user)
     if (!user) {
         return res.json({
             'valid': true
