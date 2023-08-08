@@ -2,7 +2,9 @@
 const fs = require('fs');
 const mongoose = require('mongoose')
 const path = require('path');
-const uri = fs.readFileSync(path.join(__dirname, 'uri.txt'), 'utf8');
+
+require('dotenv').config()
+const uri = process.env.uri
 
 // console.log(uri)
 
