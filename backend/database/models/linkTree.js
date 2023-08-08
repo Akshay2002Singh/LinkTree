@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+
 const { Schema } = mongoose;
 
 const treeSchema = new Schema({
@@ -9,6 +10,7 @@ const treeSchema = new Schema({
     },
     name: String,
     designation: String,
+    photo : String,
     about: String,
     portfolio: String,
     resume: String,

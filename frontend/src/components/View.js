@@ -13,12 +13,16 @@ import Alertmst from './Alertmst';
 
 
 function View(props) {
+    // backend_url and frontend_url
     const backend_url = 'http://localhost:3000'
     const frontend_url = 'http://localhost:3001'
+    // userstates 
     const [userData, setUserData] = useState({})
     const [username,setUsername] = useState("");
     const [msg, setMsg] = useState("")
+    const [defaultImg, setDefaultImg] = useState(`${process.env.PUBLIC_URL}avtar.png`)
     useEffect(() => {
+        // if user is login then fetch data 
         if (props.authToken !== null) {
             fetch(`${backend_url}/api/linktree/view`, {
                 method: "POST",
@@ -30,6 +34,10 @@ function View(props) {
                 if (d.msg === 'data found') {
                     delete d.data._id;
                     delete d.data.__v;
+                    if(d.data.photo){
+                        setDefaultImg(`${backend_url}/${d.data.photo}`)
+                    }
+                    delete d.data.photo;
                     setUsername(d.data.username);
                     delete d.data.username;
                     setUserData(d.data)
@@ -38,6 +46,7 @@ function View(props) {
         }
     }, [])
     
+    // handle copy url btn
     function handleCopy(){
         navigator.clipboard.writeText(`${frontend_url}/${username}`);
         setMsg("Linktree Url Copied")
@@ -60,7 +69,7 @@ function View(props) {
             <div className="view-form-container">
                 {userData.name !== "" ? <p className="name"> {userData.name} </p> : ""}
                 {userData.designation !== "" ? <p className="Designation"> {userData.designation} </p> : ""}
-                <img src={process.env.PUBLIC_URL + 'avtar.png'} alt='Image Preview' id='imgPreview' />
+                <img src={defaultImg} alt='Image Preview' id='imgPreview' />
                 {userData.about !== "" ?
                     <p className='about'>{userData.about}</p>
                     : ""}

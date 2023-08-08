@@ -12,7 +12,7 @@ function ViewTree(props) {
     const backend_url = 'http://localhost:3000'
     const [userData, setUserData] = useState({})
     const {username} = useParams()
-    const [msg, setMsg] = useState("")
+    const [defaultImg, setDefaultImg] = useState(`${process.env.PUBLIC_URL}avtar.png`)
     useEffect(() => {
             const user = username ? username : 'elite' ;
             fetch(`${backend_url}/${user}`, {
@@ -24,6 +24,10 @@ function ViewTree(props) {
                     delete d._id;
                     delete d.__v;
                     delete d.username;
+                    if(d.photo){
+                        setDefaultImg(`${backend_url}/${d.photo}`)
+                    }
+                    delete d.photo;
                     setUserData(d)
             }).catch(error => console.log(error))
     }, [])
@@ -42,7 +46,7 @@ function ViewTree(props) {
             <div className="view-form-container">
                 {userData.name !== "" ? <p className="name"> {userData.name} </p> : ""}
                 {userData.designation !== "" ? <p className="Designation"> {userData.designation} </p> : ""}
-                <img src={process.env.PUBLIC_URL + 'avtar.png'} alt='Image Preview' id='imgPreview' />
+                <img src={defaultImg} alt='Image Preview' id='imgPreview' />
                 {userData.about !== "" ?
                     <p className='about'>{userData.about}</p>
                     : ""}

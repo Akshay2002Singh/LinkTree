@@ -13,7 +13,7 @@ import { useState } from 'react';
 import ViewTree from './components/ViewTree';
 
 function App() {
-  const [authToken, setAuthToken] = useState(null);
+  const [authToken, setAuthToken] = useState(localStorage.getItem("authtoken"));
   return (
     <>
       <BrowserRouter>

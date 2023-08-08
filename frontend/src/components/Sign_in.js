@@ -47,8 +47,8 @@ function Sign_in(props) {
             else if (data.error === 'invalid password')
                 setMsg("Incorrect Password")
         }else{
-            // console.log(data.authToken)
             props.setAuthToken(data.authToken)
+            localStorage.setItem("authtoken", data.authToken);
             setMsg('')
             navigate('/')
         }
@@ -70,7 +70,6 @@ function Sign_in(props) {
                         <label for="password">Password</label>
                         <input type="password" name="password" id="password" placeholder="Password" required value={user.password} onChange={handleInput} />
                         <div class="forgot">
-                            <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                         </div>
                     </div>
                     <button class="sign" type='submit'>Sign in</button>

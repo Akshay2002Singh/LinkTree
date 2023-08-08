@@ -29,6 +29,7 @@ function Foot(props) {
                     </a>
                 </ul>
             </div>
+            {/* show create tree option only on view tree page  */}
             {props.showCreate ? <p><Link to='/'>Create Your Tree</Link></p> : '' }
             <p>Rapid Coders</p>
         </footer>

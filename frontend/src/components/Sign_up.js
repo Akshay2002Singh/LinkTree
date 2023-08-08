@@ -7,12 +7,14 @@ import Alertmst from './Alertmst'
 function Sign_up(props) {
     const navigate = useNavigate()
     const backend_url = 'http://localhost:3000'
+    // userstate to store form data 
     const [user, setUser] = useState({
         'username': '',
         'email': '',
         'password': '',
         'confirmPassword': ''
     })
+    // state to show msg 
     const [msg, setMsg] = useState("")
 
     function handleInput(e) {

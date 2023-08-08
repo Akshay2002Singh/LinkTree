@@ -9,6 +9,7 @@ connect_to_database().catch(err => console.log(err))
 
 app.use(express.json());
 app.use(cors())
+app.use('/static', express.static('static'))
 
 // routes 
 app.use('/',require('./routes/basic'))

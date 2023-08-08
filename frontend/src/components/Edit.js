@@ -5,10 +5,16 @@ import Sign_in from './Sign_in'
 import Alertmst from './Alertmst'
 
 function Edit(props) {
+    // backend_url
     const backend_url = 'http://localhost:3000'
+    // userstates 
     const [userData, setUserData] = useState({})
+    const [image, setImage] = useState(null)
     const [msg, setMsg] = useState("")
+    const [defaultImg, setDefaultImg] = useState(`${process.env.PUBLIC_URL}avtar.png`)
+    const [username, setUsername] = useState()
     useEffect(() => {
+        // if token present then fetch data and url 
         if (props.authToken != null) {
             fetch(`${backend_url}/api/linktree/view`, {
                 method: "POST",
@@ -20,13 +26,26 @@ function Edit(props) {
                 if (d.msg === 'data found') {
                     delete d.data._id;
                     delete d.data.__v;
+                    setUsername(d.data.username)
                     delete d.data.username;
                     setUserData(d.data)
                 }
             }).catch(error => console.log(error))
+            // set image url
+            fetch(`${backend_url}/api/linktree/image`, {
+                headers: {
+                    "username": username,
+                },
+            }
+            ).then(data => data.json()).then(data => {
+                if (data.msg === 'found') {
+                    setDefaultImg(`${backend_url}/${data.img}`)
+                }
+            })
         }
     }, [])
 
+    // handle form submit event 
     async function handleSubmit(e) {
         e.preventDefault();
         // Submit data to backend 
@@ -40,7 +59,19 @@ function Edit(props) {
         }).catch(error => console.log(error))
         const data = await response.json();
         // upload image 
-        
+        if (image) {
+            const formData = new FormData();
+            formData.append('photo', image);
+            console.log(image)
+            await fetch(`${backend_url}/api/linktree/uploadImage`, {
+                method: "POST",
+                headers: {
+                    "authToken": props.authToken
+                },
+                body: formData,
+            }).catch(error => console.log(error))
+        }
+
 
         if (data.msg === 'data submitted') {
             setMsg("Data Submitted")
@@ -56,7 +87,18 @@ function Edit(props) {
         // console.log(userData)
     }
 
+    const handlePhoto = (e) => {
+        // console.log(e.target.files[0])
+        if (e.target.files[0]) {
+            document.getElementById("imgPreview").src = URL.createObjectURL(e.target.files[0]);
+            setImage(e.target.files[0]);
+        } else {
+            document.getElementById("imgPreview").src = defaultImg;
+            setImage(null);
+        }
+    }
 
+    // if user is not login then show login page 
     if (props.authToken === null) {
         return <Sign_in authToken={props.authToken} setAuthToken={props.setAuthToken} />
     }
@@ -77,8 +119,8 @@ function Edit(props) {
                     </div>
                     <div class="link-input-group">
                         <label for="Profile">Profile photo</label>
-                        <input type="file" name="Profile" id="Profile" accept="image/*" onChange={(event) => document.getElementById("imgPreview").src = event.target.files[0] ? URL.createObjectURL(event.target.files[0]) : process.env.PUBLIC_URL + 'avtar.png'} />
-                        <img src={process.env.PUBLIC_URL + 'avtar.png'} alt='Image Preview' id='imgPreview' />
+                        <input type="file" name="Profile" id="Profile" accept="image/*" onChange={handlePhoto} />
+                        <img src={defaultImg} alt='Image Preview' id='imgPreview' />
                     </div>
                     <div class="link-input-group">
                         <label for="about">About</label>
